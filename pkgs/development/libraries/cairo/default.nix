@@ -21,6 +21,8 @@
 , libXrender
 , xcbSupport ? x11Support
 , libxcb
+, libGLSupported ? lib.elem stdenv.hostPlatform.system lib.platforms.mesaPlatforms
+, libGL
 , writeText
 , testers
 }:
@@ -69,6 +71,10 @@ stdenv.mkDerivation (finalAttrs: {
     libXrender
   ] ++ lib.optionals xcbSupport [
     libxcb
+  ] ++ lib.optionals libGLSupported [
+    # FIXME: We should figure out what is actually needing this.
+    # https://github.com/NixOS/nixpkgs/pull/247766#issuecomment-1695809990
+    libGL
   ];
 
   mesonFlags = [
